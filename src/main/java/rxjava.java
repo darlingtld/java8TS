@@ -1,0 +1,79 @@
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action1;
+
+/**
+ * Created by darlingtld on 2015/8/23 0023.
+ */
+public class rxjava {
+    public static void main(String[] args) {
+        hello("lingda", "sara");
+        Observable<String> myObservable = Observable.create(
+                new Observable.OnSubscribe<String>() {
+                    @Override
+                    public void call(Subscriber<? super String> sub) {
+                        sub.onNext("Hello, world!");
+                        sub.onCompleted();
+                    }
+                }
+        );
+
+        Subscriber<String> mySubscriber = new Subscriber<String>() {
+            @Override
+            public void onNext(String s) {
+                System.out.println(s);
+            }
+
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+        };
+
+        myObservable.subscribe(mySubscriber);
+
+        /////////////////////////////////////////////////
+
+        Observable<String> myObservable1 = Observable.just("Hello, world1!");
+        Action1<String> onNextAction = s -> System.out.println(s);
+        myObservable1.subscribe(onNextAction);
+
+        Observable.just("Hello, world!").subscribe(s -> System.out.println(s));
+
+//////////////////////////////////////////////////////////
+
+
+    }
+
+    public void testRx() {
+
+        Observable.OnSubscribe<String> subscribeFunction = (s) -> asyncProcessingOnSubscribe(s);
+
+        Observable asyncObservable = Observable.create(subscribeFunction);
+
+        asyncObservable.skip(5).subscribe((incomingValue) -> System.out.println(incomingValue));
+    }
+
+    private void asyncProcessingOnSubscribe(Subscriber s) {
+        final Subscriber subscriber = s;
+        Thread thread = new Thread(() -> produceSomeValues(subscriber));
+        thread.start();
+    }
+
+    private void produceSomeValues(Subscriber subscriber) {
+        for (int ii = 0; ii < 10; ii++) {
+            if (!subscriber.isUnsubscribed()) {
+                subscriber.onNext("Pushing value from async thread " + ii);
+            }
+        }
+    }
+
+    public static void hello(String... names) {
+        Observable.from(names).subscribe(s -> {
+            System.out.println("Hello " + s + "!");
+        });
+    }
+}
