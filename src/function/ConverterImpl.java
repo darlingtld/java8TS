@@ -1,4 +1,4 @@
-package c_function;
+package function;
 
 /**
  * Created by tangl9 on 2015-08-14.

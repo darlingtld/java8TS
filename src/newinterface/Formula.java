@@ -1,4 +1,4 @@
-package a_interface;
+package newinterface;
 
 /**
  * Created by tangl9 on 2015-08-11.

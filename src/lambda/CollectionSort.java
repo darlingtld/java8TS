@@ -1,4 +1,4 @@
-package b_lambda;
+package lambda;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,10 +17,11 @@ public class CollectionSort {
 
         System.out.println(names);
 
+        List<String> names2 = Arrays.asList("less", "wallace", "sven", "bobby");
         // sort list with lambda
-        sortNamesLambda(names);
+        sortNamesLambda(names2);
 
-        System.out.println(names);
+        System.out.println(names2);
 
     }
 

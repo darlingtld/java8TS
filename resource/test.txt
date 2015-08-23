@@ -1,0 +1,10 @@
+Grey's Anatomy,11
+The Vampire Diaries,6
+The Walking Dead,5
+Revenge,4
+Person of Interest,4
+The Big Bang Theory,8
+The Blacklist,2
+Criminal Minds,10
+Supernatural,10
+House of Cards,3

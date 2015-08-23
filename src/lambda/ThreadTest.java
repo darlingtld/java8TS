@@ -1,5 +1,7 @@
-package b_lambda;
+package lambda;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 /**
@@ -22,5 +24,8 @@ public class ThreadTest {
         };
 //        Function<Integer, String> f2 = (t) -> String.valueOf(t);
 //        Function<Integer, String> f1 = String::valueOf;
+
+        ExecutorService threadPool = Executors.newScheduledThreadPool(2);
+        threadPool.submit(() -> { System.out.println("On Threadpool"); });
     }
 }
