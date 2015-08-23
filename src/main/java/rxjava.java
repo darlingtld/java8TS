@@ -45,16 +45,43 @@ public class rxjava {
 
 //////////////////////////////////////////////////////////
 
-
+        new rxjava().testRx();
     }
 
     public void testRx() {
 
         Observable.OnSubscribe<String> subscribeFunction = (s) -> asyncProcessingOnSubscribe(s);
 
-        Observable asyncObservable = Observable.create(subscribeFunction);
+        Observable createdObservable = Observable.create(subscribeFunction);
 
-        asyncObservable.skip(5).subscribe((incomingValue) -> System.out.println(incomingValue));
+        createdObservable.subscribe(
+                (incomingValue) -> System.out.println("incoming " + incomingValue),
+                (error) -> System.out.println("Something went wrong " + ((Throwable) error).getMessage()),
+                () -> System.out.println("This observable is finished")
+        );
+
+    }
+
+    private void produceValuesAndAnError(Subscriber s) {
+        Subscriber subscriber = s;
+
+        try {
+            for (int ii = 0; ii < 50; ii++) {
+                if (!subscriber.isUnsubscribed()) {
+                    subscriber.onNext("Pushed value " + ii);
+                }
+
+                if (ii == 5) {
+                    throw new Throwable("Something has gone wrong here");
+                }
+            }
+
+            if (!subscriber.isUnsubscribed()) {
+                subscriber.onCompleted();
+            }
+        } catch (Throwable throwable) {
+            subscriber.onError(throwable);
+        }
     }
 
     private void asyncProcessingOnSubscribe(Subscriber s) {
